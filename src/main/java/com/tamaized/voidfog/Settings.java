@@ -17,11 +17,19 @@ public class Settings {
 
 	public boolean enabled = true;
 
+	public boolean scaleWithDifficulty = true;
+
 	public boolean disableInCreative = true;
 
 	public boolean respectTorches = true;
 
+	public boolean prettyFog = false;
+
 	public int voidParticleDensity = 1000;
+
+	public int maxFogHeight = 32;
+
+	public float fadeStartOffset = 15F; //additive to maxFogHeight, not an absolute height.
 
 	public boolean imABigBoi = false;
 
@@ -37,6 +45,16 @@ public class Settings {
 	    voidParticleDensity = (int)density;
 
 	    return voidParticleDensity;
+	}
+
+	public float setFogHeight(float height) {
+		maxFogHeight = (int)height;
+		return maxFogHeight;
+	}
+
+	public float setFadeStart(float value) {
+		fadeStartOffset = value;
+		return maxFogHeight;
 	}
 
 	public static Settings load(Path path) {
@@ -56,6 +74,7 @@ public class Settings {
 
 	protected void validate() {
 	    voidParticleDensity = Math.max(0, voidParticleDensity);
+		fadeStartOffset = Math.max(0, fadeStartOffset);
 	}
 
 	private Settings save(Path path) {

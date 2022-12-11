@@ -28,21 +28,36 @@ class OptionsScreen extends GameGui {
     @Override
     public void init() {
         int left =  width / 2 - 100;
-        int row = height / 4 - 24;
+        int row = height / 4 - 25;
 
         Settings config = VoidFog.config;
 
-        addButton(new Label(width / 2, 30)).setCentered().getStyle()
+        addButton(new Label(width / 2, 25)).setCentered().getStyle()
                 .setText(getTitle());
 
-        addButton(new Slider(left, row += 35, 0, 10000, config.voidParticleDensity))
+        addButton(new Slider(left, row += 10, 0, 10000, config.voidParticleDensity))
             .onChange(config::setParticleDensity)
             .setTextFormat(this::formatValue);
 
-        addButton(new Toggle(left, row += 25, config.enabled))
+        addButton(new Slider(left, row += 30, 0, 383, config.maxFogHeight))
+            .onChange(config::setFogHeight)
+            .setTextFormat(this::formatFogHeight);
+
+        addButton(new Toggle(left, row += 30, config.enabled))
             .onChange(enabled -> config.enabled = enabled)
             .getStyle()
                 .setText("menu.voidfog.enabled");
+
+        addButton(new Toggle(left, row += 25, config.prettyFog))
+                .onChange(enabled -> config.prettyFog = enabled)
+                .getStyle()
+                    .setTooltip("menu.voidfog.prettyFog.tooltip")
+                    .setText("menu.voidfog.prettyFog");
+
+        addButton(new Toggle(left, row += 25, config.scaleWithDifficulty))
+            .onChange(enabled -> config.scaleWithDifficulty = enabled)
+            .getStyle()
+                .setText("menu.voidfog.scale");
 
         addButton(new Toggle(left, row += 25, config.disableInCreative))
             .onChange(enabled -> config.disableInCreative = enabled)
@@ -60,7 +75,7 @@ class OptionsScreen extends GameGui {
                 .setTooltip("menu.voidfog.bigboi.tooltip")
                 .setText("menu.voidfog.bigboi");
 
-        addButton(new Button(left, row += 44)
+        addButton(new Button(left, row += 35)
             .onClick(sender -> finish()))
             .getStyle()
                 .setText("gui.done");
@@ -94,5 +109,9 @@ class OptionsScreen extends GameGui {
         }
 
         return Text.translatable("menu.voidfog.particles", (int)Math.floor(value));
+    }
+
+    private Text formatFogHeight(AbstractSlider<Float> sender) {
+        return Text.translatable("menu.voidfog.fogheight", (int)(double)(sender.getValue()) - 64);
     }
 }

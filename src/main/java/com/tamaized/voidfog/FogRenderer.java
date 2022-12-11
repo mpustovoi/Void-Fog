@@ -45,11 +45,26 @@ public class FogRenderer {
         }
 
         distance = MathHelper.lerp(delta / (distance > lastFogDistance ? 20 : 2), lastFogDistance, distance);
-
         lastFogDistance = distance;
+        
+        float entityAltitude = (float)getAltitude(voidable, world, entity);
+        int fadeStart = VoidFog.config.maxFogHeight;
+        float fadeOffset = VoidFog.config.fadeStartOffset;
+        float fadeEnd = fadeStart - fadeOffset;
+        float entityDelta = Math.max(0, Math.min(1, (1 - (entityAltitude - fadeEnd) / fadeOffset)));
 
-        RenderSystem.setShaderFogStart(Math.min(RenderSystem.getShaderFogStart(), getFogStart(distance, type, world, thickFog)));
-        RenderSystem.setShaderFogEnd(Math.min(RenderSystem.getShaderFogEnd(), getFogEnd(distance, type, world, thickFog)));
+        if((entityAltitude <= fadeEnd) || (VoidFog.config.prettyFog)) {
+            RenderSystem.setShaderFogStart(getFogStart(distance, type, world, thickFog));
+            RenderSystem.setShaderFogEnd(getFogEnd(distance, type, world, thickFog));
+        }
+        else if((entityAltitude <= fadeStart) && (!VoidFog.config.prettyFog)) {
+            RenderSystem.setShaderFogStart(MathHelper.lerp(entityDelta, RenderSystem.getShaderFogStart(), getFogStart(distance, type, world, thickFog)));
+            RenderSystem.setShaderFogEnd(MathHelper.lerp(entityDelta, RenderSystem.getShaderFogEnd(), getFogEnd(distance, type, world, thickFog)));
+        }
+        else {
+            RenderSystem.setShaderFogStart(RenderSystem.getShaderFogStart());
+            RenderSystem.setShaderFogEnd(RenderSystem.getShaderFogEnd());
+        }
     }
 
     private boolean canRenderDepthFog(Camera camera) {
@@ -66,14 +81,15 @@ public class FogRenderer {
     }
 
     private double getAltitude(Voidable voidable, World world, Entity entity) {
-        return voidable.isVoidFogDisabled(entity, world) ? 15 : (entity.getY() + 4 - world.getBottomY());
+        return voidable.isVoidFogDisabled(entity, world) ? 15 : (entity.getY() - world.getBottomY());
     }
 
     private float getFogDistance(World world, Entity entity) {
         Voidable voidable = Voidable.of(world);
 
         float viewDistance = MinecraftClient.getInstance().gameRenderer.getViewDistance();
-        double maxHeight = 32 * (world.getDifficulty().getId() + 1);
+        double maxHeight = (VoidFog.config.scaleWithDifficulty) ? VoidFog.config.maxFogHeight * (world.getDifficulty().getId() + 1)
+                                                                : VoidFog.config.maxFogHeight;
         double fogDistance = getLight(entity) / 16D
                            + getAltitude(voidable, world, entity) / maxHeight;
 
