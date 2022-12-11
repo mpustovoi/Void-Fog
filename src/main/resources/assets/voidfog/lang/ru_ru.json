@@ -2,7 +2,6 @@
 	"menu.voidfog.title": "Параметры тумана пустоты",
 	"menu.voidfog.enabled": "Включить туман",
 	"menu.voidfog.creative": "Отключить в креативе",
-	"menu.voidfog.scale": "Scale With Difficulty",
 	"menu.voidfog.torches": "Спрятаться в освещенных местах",
 	"menu.voidfog.particles.min": "Без частиц",
 	"menu.voidfog.particles.max": "ВСЕ частицы",

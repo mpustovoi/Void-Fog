@@ -29,25 +29,25 @@ public class VoidFog implements ClientModInitializer {
     }
 
     private void onTick(MinecraftClient client) {
-        if (!client.isPaused() && client.world != null && client.getCameraEntity() != null) {
-            if (config.enabled) {
-                Voidable dimension = Voidable.of(client.world);
+        if (!config.enabled || client.isPaused() || client.world == null || client.getCameraEntity() == null) {
+            return;
+        }
 
-                Entity entity = client.getCameraEntity();
-                if (entity.hasVehicle()) {
-                    entity = entity.getRootVehicle();
-                }
+        Voidable dimension = Voidable.of(client.world);
 
-                if (!dimension.hasDepthFog(entity, client.world)) {
-                    return;
-                }
+        Entity entity = client.getCameraEntity();
+        if (entity.hasVehicle()) {
+            entity = entity.getRootVehicle();
+        }
 
-                PARTICLE_SPAWNER.update(client.world, entity, dimension);
+        if (!dimension.hasDepthFog(entity, client.world)) {
+            return;
+        }
 
-                if (config.imABigBoi) {
-                    INSANITY.update(client.world, entity, dimension);
-                }
-            }
+        PARTICLE_SPAWNER.update(client.world, entity, dimension);
+
+        if (config.imABigBoi) {
+            INSANITY.update(client.world, entity, dimension);
         }
     }
 }
