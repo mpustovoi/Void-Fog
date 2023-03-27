@@ -26,11 +26,6 @@ public class FogRenderer {
         }
 
         Entity entity = camera.getFocusedEntity();
-
-        if (entity.hasVehicle()) {
-            entity = entity.getRootVehicle();
-        }
-
         World world = entity.getEntityWorld();
         Voidable voidable = Voidable.of(world);
 
@@ -40,8 +35,8 @@ public class FogRenderer {
 
         float distance = getFogDistance(world, entity);
 
-        if (entity instanceof LivingEntity && ((LivingEntity)entity).hasStatusEffect(StatusEffects.NIGHT_VISION)) {
-            distance *= 4 * GameRenderer.getNightVisionStrength((LivingEntity)entity, delta);
+        if (entity instanceof LivingEntity l && l.hasStatusEffect(StatusEffects.NIGHT_VISION)) {
+            distance *= 4 * GameRenderer.getNightVisionStrength(l, delta);
         }
 
         distance = MathHelper.lerp(delta / (distance > lastFogDistance ? 20 : 2), lastFogDistance, distance);
@@ -68,18 +63,27 @@ public class FogRenderer {
     private boolean canRenderDepthFog(Camera camera) {
         return VoidFog.config.enabled
                 && camera.getSubmersionType() == CameraSubmersionType.NONE
-                && !(camera.getFocusedEntity() instanceof LivingEntity && ((LivingEntity)camera.getFocusedEntity()).hasStatusEffect(StatusEffects.BLINDNESS));
+                && !(camera.getFocusedEntity() instanceof LivingEntity l && l.hasStatusEffect(StatusEffects.BLINDNESS));
     }
 
-    private int getLight(Entity entity) {
+    public static int getLight(Entity entity) {
+        entity = getCorrectEntity(entity);
         if (VoidFog.config.respectTorches) {
             return entity.world.getLightLevel(entity.getBlockPos());
         }
         return entity.world.getLightLevel(LightType.SKY, entity.getBlockPos());
     }
 
-    private double getAltitude(Voidable voidable, World world, Entity entity) {
+    private static double getAltitude(Voidable voidable, World world, Entity entity) {
+        entity = getCorrectEntity(entity);
         return voidable.isVoidFogDisabled(entity, world) ? 15 : (entity.getY() - world.getBottomY());
+    }
+
+    private static Entity getCorrectEntity(Entity entity) {
+        while (entity.hasVehicle() && !entity.getBlockStateAtPos().isAir()) {
+            entity = entity.getVehicle();
+        }
+        return entity;
     }
 
     private float getFogDistance(World world, Entity entity) {

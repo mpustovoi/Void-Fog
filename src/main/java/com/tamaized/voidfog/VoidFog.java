@@ -36,9 +36,6 @@ public class VoidFog implements ClientModInitializer {
         Voidable dimension = Voidable.of(client.world);
 
         Entity entity = client.getCameraEntity();
-        if (entity.hasVehicle()) {
-            entity = entity.getRootVehicle();
-        }
 
         if (!dimension.hasDepthFog(entity, client.world)) {
             return;
