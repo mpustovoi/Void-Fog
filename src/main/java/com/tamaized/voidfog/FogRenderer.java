@@ -79,7 +79,7 @@ public class FogRenderer {
         return voidable.isVoidFogDisabled(entity, world) ? 15 : (entity.getY() - world.getBottomY());
     }
 
-    private static Entity getCorrectEntity(Entity entity) {
+    public static Entity getCorrectEntity(Entity entity) {
         while (entity.hasVehicle() && !entity.getBlockStateAtPos().isAir()) {
             entity = entity.getVehicle();
         }

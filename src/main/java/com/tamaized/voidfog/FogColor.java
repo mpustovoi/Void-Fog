@@ -2,18 +2,23 @@ package com.tamaized.voidfog;
 
 import com.tamaized.voidfog.api.Voidable;
 
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.CameraSubmersionType;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.LightType;
 
 public class FogColor {
-
     private double brightness;
 
     public double getFogBrightness(ClientWorld world, Entity entity, float delta) {
         if (entity.hasVehicle()) {
             entity = entity.getRootVehicle();
+        }
+
+        if (MinecraftClient.getInstance().gameRenderer.getCamera().getSubmersionType() != CameraSubmersionType.NONE) {
+            return 1;
         }
 
         double prevBrightness = brightness;
@@ -32,6 +37,8 @@ public class FogColor {
         if (voidable.isVoidFogDisabled(entity, world)) {
             return 1;
         }
+
+        entity = FogRenderer.getCorrectEntity(entity);
 
         double yPosition = MathHelper.lerp(delta, entity.prevY, entity.getY());
         double brightness = yPosition * world.getLevelProperties().getHorizonShadingRatio();
