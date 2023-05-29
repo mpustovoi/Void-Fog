@@ -3,6 +3,7 @@ package com.tamaized.voidfog.modmenu;
 import org.jetbrains.annotations.Nullable;
 
 import com.minelittlepony.common.client.gui.GameGui;
+import com.minelittlepony.common.client.gui.ScrollContainer;
 import com.minelittlepony.common.client.gui.element.AbstractSlider;
 import com.minelittlepony.common.client.gui.element.Button;
 import com.minelittlepony.common.client.gui.element.Label;
@@ -11,8 +12,8 @@ import com.minelittlepony.common.client.gui.element.Toggle;
 import com.tamaized.voidfog.Settings;
 import com.tamaized.voidfog.VoidFog;
 
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 
 class OptionsScreen extends GameGui {
@@ -21,70 +22,84 @@ class OptionsScreen extends GameGui {
     private static final Text PARTICLES_MAX = Text.translatable("menu.voidfog.particles.max");
     private static final Text PARTICLES_DEF = Text.translatable("menu.voidfog.particles.default");
 
+    private final ScrollContainer content = new ScrollContainer();
+
     public OptionsScreen(@Nullable Screen parent) {
         super(TITLE, parent);
+
+        content.margin.top = 30;
+        content.margin.bottom = 30;
+        content.getContentPadding().top = 10;
+        content.getContentPadding().right = 10;
+        content.getContentPadding().bottom = 20;
+        content.getContentPadding().left = 10;
+
     }
 
     @Override
     public void init() {
-        int left =  width / 2 - 100;
-        int row = height / 4 - 25;
+        content.init(this::rebuildContent);
+    }
+
+    private void rebuildContent() {
+        int LEFT = content.width / 2 - 110;
+
+        int row = 0;
 
         Settings config = VoidFog.config;
 
-        addButton(new Label(width / 2, 25)).setCentered().getStyle()
-                .setText(getTitle());
+        getChildElements().add(content);
 
-        addButton(new Slider(left, row += 10, 0, 10000, config.voidParticleDensity))
+        addButton(new Label(width / 2, 5).setCentered()).getStyle().setText(getTitle().getString());
+
+        content.addButton(new Slider(LEFT, row += 10, 0, 10000, config.voidParticleDensity))
             .onChange(config::setParticleDensity)
             .setTextFormat(this::formatValue);
 
-        addButton(new Slider(left, row += 30, 0, 383, config.maxFogHeight))
+        content.addButton(new Slider(LEFT, row += 30, 0, 383, config.maxFogHeight))
             .onChange(config::setFogHeight)
             .setTextFormat(this::formatFogHeight);
 
-        addButton(new Toggle(left, row += 30, config.enabled))
+        content.addButton(new Toggle(LEFT, row += 30, config.enabled))
             .onChange(enabled -> config.enabled = enabled)
             .getStyle()
                 .setText("menu.voidfog.enabled");
 
-        addButton(new Toggle(left, row += 25, config.prettyFog))
+        content.addButton(new Toggle(LEFT, row += 25, config.prettyFog))
                 .onChange(enabled -> config.prettyFog = enabled)
                 .getStyle()
                     .setTooltip("menu.voidfog.prettyFog.tooltip")
                     .setText("menu.voidfog.prettyFog");
 
-        addButton(new Toggle(left, row += 25, config.scaleWithDifficulty))
+        content.addButton(new Toggle(LEFT, row += 25, config.scaleWithDifficulty))
             .onChange(enabled -> config.scaleWithDifficulty = enabled)
             .getStyle()
                 .setText("menu.voidfog.scale");
 
-        addButton(new Toggle(left, row += 25, config.disableInCreative))
+        content.addButton(new Toggle(LEFT, row += 25, config.disableInCreative))
             .onChange(enabled -> config.disableInCreative = enabled)
             .getStyle()
                 .setText("menu.voidfog.creative");
 
-        addButton(new Toggle(left, row += 25, config.respectTorches))
+        content.addButton(new Toggle(LEFT, row += 25, config.respectTorches))
             .onChange(enabled -> config.respectTorches = enabled)
             .getStyle()
                 .setText("menu.voidfog.torches");
 
-        addButton(new Toggle(left, row += 25, config.imABigBoi))
+        content.addButton(new Toggle(LEFT, row += 25, config.imABigBoi))
             .onChange(enabled -> config.imABigBoi = enabled)
             .getStyle()
                 .setTooltip("menu.voidfog.bigboi.tooltip")
                 .setText("menu.voidfog.bigboi");
 
-        addButton(new Button(left, row += 35)
-            .onClick(sender -> finish()))
-            .getStyle()
-                .setText("gui.done");
+        addButton(new Button(width / 2 - 100, height - 25).onClick(sender -> finish())).getStyle().setText("gui.done");
     }
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float partialTicks) {
         renderBackground(context);
         super.render(context, mouseX, mouseY, partialTicks);
+        content.render(context, mouseX, mouseY, partialTicks);
     }
 
     @Override
