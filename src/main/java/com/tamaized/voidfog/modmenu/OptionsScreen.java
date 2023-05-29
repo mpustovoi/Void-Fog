@@ -82,9 +82,9 @@ class OptionsScreen extends GameGui {
     }
 
     @Override
-    public void render(MatrixStack matrices, int mouseX, int mouseY, float partialTicks) {
-        renderBackground(matrices);
-        super.render(matrices, mouseX, mouseY, partialTicks);
+    public void render(DrawContext context, int mouseX, int mouseY, float partialTicks) {
+        renderBackground(context);
+        super.render(context, mouseX, mouseY, partialTicks);
     }
 
     @Override

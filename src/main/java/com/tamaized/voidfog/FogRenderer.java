@@ -69,9 +69,9 @@ public class FogRenderer {
     public static int getLight(Entity entity) {
         entity = getCorrectEntity(entity);
         if (VoidFog.config.respectTorches) {
-            return entity.world.getLightLevel(entity.getBlockPos());
+            return entity.getWorld().getLightLevel(entity.getBlockPos());
         }
-        return entity.world.getLightLevel(LightType.SKY, entity.getBlockPos());
+        return entity.getWorld().getLightLevel(LightType.SKY, entity.getBlockPos());
     }
 
     private static double getAltitude(Voidable voidable, World world, Entity entity) {

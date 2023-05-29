@@ -43,7 +43,7 @@ public class FogColor {
         double yPosition = MathHelper.lerp(delta, entity.prevY, entity.getY());
         double brightness = yPosition * world.getLevelProperties().getHorizonShadingRatio();
 
-        float light = entity.world.getLightLevel(LightType.SKY, entity.getBlockPos()) / 15F;
+        float light = entity.getWorld().getLightLevel(LightType.SKY, entity.getBlockPos()) / 15F;
 
         brightness *= light;
 
