@@ -6,6 +6,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.render.CameraSubmersionType;
 import net.minecraft.client.world.ClientWorld;
 import net.minecraft.entity.Entity;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.LightType;
 
@@ -43,7 +44,7 @@ public class FogColor {
         double yPosition = MathHelper.lerp(delta, entity.prevY, entity.getY());
         double brightness = yPosition * world.getLevelProperties().getHorizonShadingRatio();
 
-        float light = entity.getWorld().getLightLevel(LightType.SKY, entity.getBlockPos()) / 15F;
+        float light = entity.getWorld().getLightLevel(LightType.SKY, BlockPos.ofFloored(entity.getEyePos())) / 15F;
 
         brightness *= light;
 

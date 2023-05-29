@@ -32,7 +32,7 @@ public class InsanityEngine {
 
     public void update(World world, Entity entity, Voidable dimension) {
 
-        if (!dimension.hasInsanity(entity.getBlockPos(), world)) {
+        if (!dimension.hasInsanity(BlockPos.ofFloored(entity.getEyePos()), world)) {
             return;
         }
 
@@ -43,7 +43,7 @@ public class InsanityEngine {
             return;
         }
 
-        double y = entity.getY();
+        double y = entity.getEyeY();
         int rarity = getRarity(y, world);
 
         insanityBuildUp += y < 0 ? -y : 1;

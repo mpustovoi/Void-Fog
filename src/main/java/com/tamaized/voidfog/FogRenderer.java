@@ -11,6 +11,7 @@ import net.minecraft.client.render.BackgroundRenderer.FogType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.world.LightType;
 import net.minecraft.world.World;
@@ -68,10 +69,11 @@ public class FogRenderer {
 
     public static int getLight(Entity entity) {
         entity = getCorrectEntity(entity);
+        BlockPos pos = BlockPos.ofFloored(entity.getEyePos());
         if (VoidFog.config.respectTorches) {
-            return entity.getWorld().getLightLevel(entity.getBlockPos());
+            return entity.getWorld().getLightLevel(pos);
         }
-        return entity.getWorld().getLightLevel(LightType.SKY, entity.getBlockPos());
+        return entity.getWorld().getLightLevel(LightType.SKY, pos);
     }
 
     private static double getAltitude(Voidable voidable, World world, Entity entity) {
