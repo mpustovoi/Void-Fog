@@ -4,10 +4,11 @@
   "version": "${version}",
   "name": "Void Fog",
   "description": "Brings back the old Void Fog.",
-  "authors": [
-    "Tamaized", "Sollace"
-  ],
-  "contact": {},
+  "authors": [ "Tamaized", "Sollace" ],
+  "contact": {
+    "sources": "https://github.com/Sollace/Void-Fog",
+    "issues": "https://github.com/Sollace/Void-Fog/issues"
+  },
   "license": "MIT",
   "icon": "voidfog_logo.png",
   "environment": "client",
@@ -23,13 +24,22 @@
     "voidfog.mixin.json"
   ],
   "depends": {
-    "fabricloader": ">=0.12.0",
+    "minecraft": "${minecraftVersion}",
+    "fabricloader": "${loaderVersion}",
     "java": ">=17",
-    "fabric-api-base": ">=0.1.0",
-    "fabric-lifecycle-events-v1": ">=0.1.0",
-    "fabric-resource-loader-v0": ">=0.1.0"
+    "fabric-api": "${fabricVersion}",
+    "kirin": "${kirinVersion}"
   },
   "suggests": {
     "modmenu": "*"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.github_releases": "https://github.com/Sollace/Void-Fog/releases",
+        "modmenu.modrinth": "https://modrinth.com/mod/void-fog"
+      },
+      "update_checker": true
+    }
   }
 }

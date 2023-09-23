@@ -96,10 +96,10 @@ class OptionsScreen extends GameGui {
     }
 
     @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float partialTicks) {
-        renderBackground(context);
-        super.render(context, mouseX, mouseY, partialTicks);
-        content.render(context, mouseX, mouseY, partialTicks);
+    public void render(DrawContext context, int mouseX, int mouseY, float tickDelta) {
+        renderBackground(context, mouseX, mouseY, tickDelta);
+        super.render(context, mouseX, mouseY, tickDelta);
+        content.render(context, mouseX, mouseY, tickDelta);
     }
 
     @Override
