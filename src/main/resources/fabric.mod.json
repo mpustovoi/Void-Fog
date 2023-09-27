@@ -28,7 +28,7 @@
     "fabricloader": "${loaderVersion}",
     "java": ">=17",
     "fabric-api": "${fabricVersion}",
-    "kirin": "${kirinVersion}"
+    "kirin": "*"
   },
   "suggests": {
     "modmenu": "*"
