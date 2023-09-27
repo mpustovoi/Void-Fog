@@ -52,6 +52,7 @@ dependencies {
     modApi "com.minelittlepony:kirin:${project.kirin_version}"
     include "com.minelittlepony:kirin:${project.kirin_version}"
 
+    modCompileOnly fabricApi.module("fabric-screen-api-v1", project.fabric_version)
     modCompileOnly("com.terraformersmc:modmenu:${project.modmenu_version}")
 }
 
