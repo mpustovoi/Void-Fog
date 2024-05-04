@@ -1,15 +1,16 @@
 {
-	"menu.voidfog.title": "Параметры тумана пустоты",
+	"menu.voidfog.title": "Параметры пустотного тумана",
 	"menu.voidfog.enabled": "Включить туман",
-	"menu.voidfog.creative": "Отключить в креативе",
-	"menu.voidfog.torches": "Спрятаться в освещенных местах",
+	"menu.voidfog.creative": "Отключить в творческом режиме",
+	"menu.voidfog.scale": "Масштабировать с уровнем сложности",
+	"menu.voidfog.torches": "Прятать в освещённых местах",
 	"menu.voidfog.particles.min": "Без частиц",
-	"menu.voidfog.particles.max": "ВСЕ частицы",
-	"menu.voidfog.particles.default": "Частицы: По умолчанию",
+	"menu.voidfog.particles.max": "Все частицы",
+	"menu.voidfog.particles.default": "Частицы: по умолчанию",
 	"menu.voidfog.particles": "Частицы: %d",
 	"menu.voidfog.fogheight": "Высота тумана: %d",
-	"menu.voidfog.bigboi": "Режим большого мальчика",
-	"menu.voidfog.bigboi.tooltip": "Делает игру еще более пугающей.\r\nВы большой парень?",
+	"menu.voidfog.bigboi": "Режим для большого мальчика",
+	"menu.voidfog.bigboi.tooltip": "Делает игру ещё более пугающей.\r\nВы же большой мальчик?",
 	"menu.voidfog.prettyFog": "Красивый туман",
-	"menu.voidfog.prettyFog.tooltip": "Включение альтернативного вида тумана"
+	"menu.voidfog.prettyFog.tooltip": "Включение альтернативного вида тумана."
 }
